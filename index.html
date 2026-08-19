@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indique um amigo — ArenaCash</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --blue-900: #0a1628;
+      --blue-800: #0f2744;
+      --blue-700: #1a3a6b;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-400: #60a5fa;
+      --blue-100: #dbeafe;
+      --white: #ffffff;
+      --white-soft: rgba(255, 255, 255, 0.88);
+      --white-muted: rgba(255, 255, 255, 0.65);
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--blue-900);
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container da apresentação */
+    .deck {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* Slide único — capa */
+    .slide {
+      position: relative;
+      width: min(1100px, 100%);
+      min-height: min(620px, calc(100vh - 4rem));
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(2.5rem, 6vw, 5rem);
+      background:
+        radial-gradient(circle at 85% 15%, rgba(96, 165, 250, 0.35) 0%, transparent 45%),
+        radial-gradient(circle at 10% 90%, rgba(37, 99, 235, 0.25) 0%, transparent 40%),
+        linear-gradient(135deg, var(--blue-800) 0%, var(--blue-900) 55%, #061018 100%);
+      box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    /* Decoração de fundo */
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .slide__inner {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+    }
+
+    /* Logo / marca */
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.625rem;
+      margin-bottom: 2.5rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, var(--blue-500), var(--blue-600));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    .brand__icon svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--white);
+    }
+
+    /* Badge da campanha */
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 0.875rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--blue-100);
+      background: rgba(59, 130, 246, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      border-radius: 999px;
+    }
+
+    /* Título principal */
+    .slide__title {
+      font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .slide__title span {
+      background: linear-gradient(90deg, var(--white) 0%, var(--blue-400) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Subtítulo */
+    .slide__subtitle {
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      line-height: 1.55;
+      color: var(--white-soft);
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Botão CTA */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.95rem 1.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--blue-900);
+      background: var(--white);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+      background: var(--blue-100);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Rodapé do slide */
+    .slide__footer {
+      position: absolute;
+      bottom: clamp(1.5rem, 3vw, 2.5rem);
+      left: clamp(2.5rem, 6vw, 5rem);
+      right: clamp(2.5rem, 6vw, 5rem);
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+      color: var(--white-muted);
+    }
+
+    .slide__footer strong {
+      color: var(--white-soft);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="deck">
+    <section class="slide" aria-label="Capa da campanha">
+      <div class="slide__inner">
+        <div class="brand" aria-label="ArenaCash">
+          <span class="brand__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l7.5 3.75L12 11.68 4.5 7.93 12 4.18zM4 8.82l7 3.5v8.36l-7-3.5V8.82zm9 11.86v-8.36l7-3.5v8.36l-7 3.5z"/>
+            </svg>
+          </span>
+          ArenaCash
+        </div>
+
+        <p class="badge">Campanha especial</p>
+
+        <h1 class="slide__title">
+          Indique um amigo<br>
+          e ganhe <span>R$ 50</span>
+        </h1>
+
+        <p class="slide__subtitle">
+          Compartilhe a ArenaCash com quem você confia. Quando seu amigo abrir conta,
+          vocês dois recebem R$ 50 direto na carteira.
+        </p>
+
+        <a href="#" class="btn">
+          Saiba mais
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+
+      <footer class="slide__footer">
+        <span><strong>ArenaCash</strong> · Investimentos movidos a tecnologia</span>
+        <span>Slide 1</span>
+      </footer>
+    </section>
+  </main>
+
+</body>
+</html>
